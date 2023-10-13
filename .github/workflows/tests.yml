@@ -1,0 +1,58 @@
+# Copyright (C) 2023  Horimoto Yasuhiro <horimoto@clear-code.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public
+# License along with this program.  If not, see
+# <http://www.gnu.org/licenses/>.
+
+name: Tests
+on:
+  - push
+  - pull_request
+jobs:
+  test:
+    name: Tests
+    strategy:
+      fail-fast: false
+      matrix:
+        raku-version:
+          - "2023.08-01"
+        images:
+          - "ubuntu:22.04"
+          - "images:debian/12"
+          - "images:almalinux/9"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: canonical/setup-lxd@v0.1.1
+      - name: Install required packages for building Star Bundle
+        run: |
+          sudo apt update
+          sudo apt install -y -V build-essential git libssl-dev
+      - name: Build Star Bundle
+        run: |
+          mkdir rakudo
+          pushd rakudo
+          curl -LJO https://rakudo.org/latest/star/src
+          tar -xzf rakudo-star-*.tar.gz
+          mv rakudo-star-*/* .
+          rm -fr rakudo-star-*
+          ./bin/rstar install
+          popd
+      - name: Run tests
+        run: |
+          set -x
+          lxc launch ${{ matrix.image }} target
+          lxc config device add target host disk source=$PWD path=/host
+          lxc exec target -- /host/t/run-tests.sh
+          lxc stop target
+          lxc delete target
