@@ -1,4 +1,4 @@
-# grnp6
+# LibXML2P6
 
 Raku binding for LibXML2
 
