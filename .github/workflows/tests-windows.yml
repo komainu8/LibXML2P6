@@ -34,7 +34,7 @@ jobs:
           ls
           git --version
           $ls_result = `ls
-          $revision = `git describe --abbrev=7 HEAD
+          $revision = `git rev-parse HEAD
           Write-Output "Hello World"
           Write-Host $ls_result
           Write-Host "${ls_result}"
