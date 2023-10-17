@@ -31,12 +31,4 @@ jobs:
       - uses: actions/checkout@v4
       - name: echo-test
         run: |
-          ls
-          git --version
-          $ls_result = `ls
-          $revision = `git rev-parse HEAD
-          Write-Output "Hello World"
-          Write-Host $ls_result
-          Write-Host "${ls_result}"
-          Write-Host $revision
-          Write-Host "${revision}"
+          git rev-parse HEAD
