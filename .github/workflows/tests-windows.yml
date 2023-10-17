@@ -33,4 +33,4 @@ jobs:
         run: |
           $revision = `git describe --abbrev=7 HEAD
           Write-Output "Hello World!"
-          Write-Output $revision
+          Write-Host $revision
