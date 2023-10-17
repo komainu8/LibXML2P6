@@ -32,4 +32,4 @@ jobs:
       - name: echo-test
         run: |
           $revision = git describe --abbrev=7 HEAD
-          Write-Output "${groonga_revision}"
+          Write-Output "${revision}"
