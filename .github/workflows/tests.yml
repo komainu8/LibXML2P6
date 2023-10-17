@@ -51,7 +51,7 @@ jobs:
       - name: Run tests
         run: |
           set -x
-          lxc launch ${{ matrix.image }} target
+          lxc launch ${{ matrix.images }} target
           lxc config device add target host disk source=$PWD path=/host
           lxc exec target -- /host/t/run-tests.sh
           lxc stop target
