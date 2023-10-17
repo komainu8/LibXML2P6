@@ -53,6 +53,7 @@ jobs:
           set -x
           lxc launch ${{ matrix.images }} target
           lxc config device add target host disk source=$PWD path=/host
+          sleep 5
           lxc exec target -- /host/t/run-tests.sh
           lxc stop target
           lxc delete target
