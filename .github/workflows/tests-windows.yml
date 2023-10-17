@@ -32,6 +32,7 @@ jobs:
       - name: echo-test
         run: |
           ls
+          git --version
           $ls_result = `ls
           $revision = `git describe --abbrev=7 HEAD
           Write-Output "Hello World"
